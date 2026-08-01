@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NST Software</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="main-wrapper">
+    <div class="glass-container">
+        <h4 class="brand-logo mb-3">Neural<span>Artist</span></h4>
+        
+        <div class="content-layout">
+            <div class="control-panel">
+                <div class="dual-slots">
+                    <div class="slot" onclick="openLib('content')">
+                        <img id="imgContent">
+                        <span>+ Nội dung</span>
+                    </div>
+                    <div class="slot" onclick="openLib('style')">
+                        <img id="imgStyle">
+                        <span>+ Nghệ thuật</span>
+                    </div>
+                </div>
+
+                <div class="parameter-group">
+                    <div class="param-item">
+                        <div class="d-flex justify-content-between small"><span>Chi tiết</span><span id="valC">50%</span></div>
+                        <input type="range" class="form-range" id="cWeight" value="50">
+                    </div>
+                    <div class="param-item">
+                        <div class="d-flex justify-content-between small"><span>Nghệ thuật</span><span id="valS">50%</span></div>
+                        <input type="range" class="form-range" id="sWeight" value="50">
+                    </div>
+                    <div class="param-item">
+                        <div class="d-flex justify-content-between small"><span>Hòa quyện</span><span id="valA">50%</span></div>
+                        <input type="range" class="form-range" id="aWeight" value="50">
+                    </div>
+                </div>
+
+                <button class="btn-generate" id="btnRun">SÁNG TẠO NGAY</button>
+            </div>
+
+            <div class="result-panel">
+                <div class="result-box" id="resultContainer">
+                    <div id="initialLabel" class="empty-state">
+                        <h1 class="display-label">KẾT QUẢ</h1>
+                        <p class="text-muted">Chọn ảnh và nhấn "Sáng tạo" để bắt đầu.<br>Bạn có thể xem lại quá trình vẽ dưới dạng Video!</p>
+                    </div>
+
+                    <div id="displayArea" class="d-none w-100 h-100">
+                        <img id="imgResult" class="res-media">
+                        <video id="videoResult" class="res-media d-none" controls playsinline muted></video>
+                        
+                        <div class="media-tabs">
+                            <button id="btnShowImg" class="active" onclick="switchMedia('img')">ẢNH</button>
+                            <button id="btnShowVid" onclick="switchMedia('vid')">VIDEO</button>
+                        </div>
+                    </div>
+
+                    <div id="loader" class="d-none text-center">
+                        <div class="spinner-border text-primary"></div>
+                        <p class="mt-2">Đang vẽ...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="file" id="inputContentFile" class="d-none" accept="image/*">
+<input type="file" id="inputStyleFile" class="d-none" accept="image/*">
+
+<div class="modal fade" id="libModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-dark text-light border-secondary shadow-lg">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title">Chọn hình ảnh</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-4">
+                    <button class="btn btn-outline-primary px-4 py-2" onclick="triggerLocalFile()">
+                        📁 Tải ảnh từ thiết bị của bạn
+                    </button>
+                </div>
+                
+                <div class="hr-text text-muted mb-3">HOẶC CHỌN ẢNH MẪU</div>
+                
+                <div class="lib-grid" id="libGrid">
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/main.js"></script>
+</body>
+</html>

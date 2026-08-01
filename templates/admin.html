@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NST Software Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+    <div class="admin-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <i class="fa-solid fa-microchip"></i>
+                <span>NST Software Admin</span>
+            </div>
+            <ul class="nav-links">
+                <li class="active" data-target="config-section">
+                    <i class="fa-solid fa-sliders"></i> Cấu hình Engine
+                </li>
+                <li data-target="library-section">
+                    <i class="fa-solid fa-images"></i> Thư viện mẫu
+                </li>
+                <li data-target="history-section">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Lịch sử sử dụng
+                </li>
+                <li>
+                    <a href="/" style="text-decoration: none; color: inherit;">
+                        <i class="fa-solid fa-arrow-left"></i> Quay lại App
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <section id="config-section" class="admin-section active">
+                <h2><i class="fa-solid fa-gear"></i> Tinh chỉnh thông số</h2>
+                <div class="card">
+                    <form id="config-form">
+                        <div class="form-group">
+                            <label>Content Weight (Trọng số nội dung)</label>
+                            <input type="number" name="CONTENT_WEIGHT" step="0.1" value="{{ config.cWeight }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Style Weight (Trọng số nghệ thuật)</label>
+                            <input type="text" name="STYLE_WEIGHT" value="{{ config.sWeight }}">
+                        </div>
+                        <div class="form-group">
+                            <label>AdaIN Weight (Trọng số Hybrid)</label>
+                            <input type="text" name="ADAIN_WEIGHT" value="{{ config.aWeight }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Epochs Per Size (Ví dụ: [40, 30, 30])</label>
+                            <input type="text" name="EPOCHS_PER_SIZE" value="{{ config.EPOCHS_PER_SIZE }}">
+                        </div>
+                        <button type="submit" class="btn-save">
+                            <i class="fa-solid fa-floppy-disk"></i> Lưu cấu hình
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <section id="library-section" class="admin-section">
+                <h2><i class="fa-solid fa-photo-film"></i> Quản lý thư viện mẫu</h2>
+                
+                <div class="upload-zone card">
+                    <h3>Tải ảnh mới</h3>
+                    <div class="upload-controls">
+                        <select id="upload-type">
+                            <option value="content">Nội dung</option>
+                            <option value="style">Nghệ thuật</option>
+                        </select>
+                        <input type="file" id="admin-file-input" accept="image/*">
+                        <button onclick="uploadImage()" class="btn-primary">
+                            <i class="fa-solid fa-upload"></i> Tải lên
+                        </button>
+                    </div>
+                </div>
+
+                <div class="library-split">
+                    <div class="card lib-col">
+                        <div class="col-header">
+                            <h3><i class="fa-solid fa-image"></i> Ảnh Nội dung</h3>
+                            <span class="badge">Content</span>
+                        </div>
+                        <div id="content-image-list" class="image-grid"></div>
+                    </div>
+
+                    <div class="card lib-col">
+                        <div class="col-header">
+                            <h3><i class="fa-solid fa-palette"></i> Ảnh Nghệ thuật</h3>
+                            <span class="badge badge-style">Style</span>
+                        </div>
+                        <div id="style-image-list" class="image-grid"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="history-section" class="admin-section">
+                <div class="history-header">
+                    <h2><i class="fa-solid fa-history"></i> Nhật ký hệ thống</h2>
+                    <button onclick="loadHistory()" class="btn-refresh">
+                        <i class="fa-solid fa-sync"></i> Làm mới
+                    </button>
+                </div>
+                
+                <div class="history-container">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Thời gian</th>
+                                <th>Nội dung</th>
+                                <th>Nghệ thuật</th>
+                                <th>Kết quả</th>
+                                <th>Chất lượng</th>
+                                <th>Trọng số</th>
+                                <th>Thời gian chạy</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-table-body"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>
