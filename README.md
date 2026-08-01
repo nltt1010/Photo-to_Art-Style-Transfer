@@ -18,7 +18,7 @@ The engine utilizes a pre-trained **VGG-19** network as a feature extractor. We 
 ### Model Architecture
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/e95586cc-786a-42d3-9c68-fdd07193222a" alt="Mô tả hình ảnh" width="756" />
+  <img width="756" height="412" alt="image" src="https://github.com/user-attachments/assets/32c1e99c-f956-4a14-ba23-bc1216724253" />
 </p>
 
 ## 3. Installation & Usage
@@ -52,7 +52,7 @@ The engine utilizes a pre-trained **VGG-19** network as a feature extractor. We 
 
 ### Result Preview
 <p align="center">
-  <img width="756" height="375" alt="image" src="https://github.com/user-attachments/assets/20c01e12-4ac8-4ba1-8371-a5360b7431d9" />
+  <img width="756" height="375" alt="image" src="https://github.com/user-attachments/assets/de600942-014c-44ef-a77a-e75127206a42" />
 </p>
 
 
