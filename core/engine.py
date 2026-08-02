@@ -70,42 +70,24 @@ class StyleTransferEngine:
         return res_img, video_name, duration, ssim_v, psnr_v
 
     def _create_video(self, frames_dir, output_path):
-        import cv2
-        images = sorted(glob.glob(os.path.join(frames_dir, "*.jpg")))
-        if not images: return
-        
-        # Đọc frame đầu tiên để lấy kích thước
-        first_frame = cv2.imread(images[0])
-        h, w, _ = first_frame.shape
-        
-        # Tăng FPS lên một chút để video mượt hơn (ví dụ 10 FPS)
-        fps = 10.0
-        
-        # Thử codec avc1 (H.264) trước vì nó tốt nhất cho Web
-        # Nếu không được thì dùng mp4v (nhưng mp4v có thể không xem được trên một số trình duyệt)
-        fourcc = cv2.VideoWriter_fourcc(*'avc1')
-        out = cv2.VideoWriter(output_path, fourcc, fps, (w, h))
-        
-        # Kiểm tra nếu VideoWriter không mở được với avc1, thử fallback sang mp4v
-        if not out.isOpened():
-            fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-            out = cv2.VideoWriter(output_path, fourcc, fps, (w, h))
-        
-        for img_path in images:
-            img = cv2.imread(img_path)
-            if img is None: continue
-            # Đảm bảo tất cả frames có cùng kích thước với frame đầu tiên (tránh lỗi VideoWriter)
-            if img.shape[0] != h or img.shape[1] != w:
-                img = cv2.resize(img, (w, h))
-            out.write(img)
+        try:
+            import imageio
+            images = sorted(glob.glob(os.path.join(frames_dir, "*.jpg")))
+            if not images: return
             
-        # Thêm frame cuối cùng vài lần để người dùng có thể nhìn rõ kết quả
-        if images:
-            last_img = cv2.imread(images[-1])
-            if last_img is not None:
-                if last_img.shape[0] != h or last_img.shape[1] != w:
-                    last_img = cv2.resize(last_img, (w, h))
-                for _ in range(15): # Giữ 1.5 giây ở frame cuối
-                    out.write(last_img)
+            # Sử dụng imageio-ffmpeg để tạo video H264 tương thích 100% với trình duyệt Web
+            writer = imageio.get_writer(output_path, fps=10, format='FFMPEG', codec='libx264', macro_block_size=None)
             
-        out.release()
+            for img_path in images:
+                img = imageio.imread(img_path)
+                writer.append_data(img)
+                
+            # Thêm frame cuối cùng vài lần để người dùng có thể nhìn rõ kết quả (giữ 1.5 giây)
+            if images:
+                last_img = imageio.imread(images[-1])
+                for _ in range(15):
+                    writer.append_data(last_img)
+                    
+            writer.close()
+        except Exception as e:
+            print(f"Lỗi khi tạo video bằng imageio: {e}")
