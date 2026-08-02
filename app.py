@@ -9,6 +9,7 @@ import torch
 import config
 from core.engine import StyleTransferEngine
 from core.transform import ImageProcessor
+from PIL import Image
 
 # 1. Setup Directories
 for folder in ['static/uploads', 'static/results', 'static/history', 'static/suggested_content', 'static/suggested_style']:
@@ -89,6 +90,12 @@ h1, h2, h3, h4, p, span, label {
     background: rgba(0, 0, 0, 0.2);
     border: 2px dashed rgba(255, 255, 255, 0.1);
     border-radius: 16px;
+}
+/* Cố định kích thước ảnh để không bị xô lệch giao diện */
+[data-testid="stImage"] img {
+    height: 350px !important;
+    object-fit: contain !important;
+    border-radius: 12px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -184,7 +191,11 @@ if page == "🎨 Giao diện chính (Main App)":
                     st.success(f"Hoàn thành trong {duration} giây!")
                     
                     st.subheader("Kết Quả (Result)")
-                    st.image(res_path, use_container_width=True)
+                    try:
+                        res_img_obj = Image.open(res_path)
+                        st.image(res_img_obj, use_container_width=True)
+                    except Exception as e_img:
+                        st.error("Không thể tải ảnh kết quả lên giao diện.")
                     
                     col_m1, col_m2 = st.columns(2)
                     col_m1.metric("SSIM", f"{ssim_val:.4f}")
@@ -193,7 +204,11 @@ if page == "🎨 Giao diện chính (Main App)":
                     video_path = os.path.join('static/results', video_filename)
                     if os.path.exists(video_path): 
                         st.subheader("Video Tiến Trình")
-                        st.video(video_path)
+                        try:
+                            with open(video_path, 'rb') as vf:
+                                st.video(vf.read())
+                        except:
+                            st.video(video_path)
                         
                 except Exception as e:
                     st.error(f"Đã xảy ra lỗi: {e}")
