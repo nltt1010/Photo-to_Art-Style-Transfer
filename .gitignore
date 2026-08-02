@@ -1,5 +1,7 @@
-*.jpg 
-*.jpeg 
-*.png 
 *.mp4 
 *.pth 
+static/uploads/*
+static/results/*
+static/history/*
+!static/suggested_content/*
+!static/suggested_style/*

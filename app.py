@@ -153,10 +153,10 @@ if page == "🎨 Giao diện chính (Main App)":
             else:
                 st.warning("Không tìm thấy ảnh phong cách gợi ý nào.")
 
-    st.sidebar.header("Siêu tham số (Hyperparameters)")
-    raw_cw = st.sidebar.slider("Content Weight (Giữ khối lượng ảnh gốc)", 0, 100, 50)
-    raw_sw = st.sidebar.slider("Style Weight (Mức độ áp dụng phong cách)", 0, 100, 50)
-    raw_aw = st.sidebar.slider("AdaIN Weight (Mức độ đồng bộ màu sắc)", 0, 100, 50)
+    with st.expander("⚙️ Siêu tham số (Hyperparameters) - Mở rộng để tùy chỉnh", expanded=True):
+        raw_cw = st.slider("Content Weight (Giữ khối lượng ảnh gốc)", 0, 100, 50)
+        raw_sw = st.slider("Style Weight (Mức độ áp dụng phong cách)", 0, 100, 50)
+        raw_aw = st.slider("AdaIN Weight (Mức độ đồng bộ màu sắc)", 0, 100, 50)
 
     if st.button("Bắt đầu xử lý (Process)", type="primary", use_container_width=True):
         if not content_img_path or not style_img_path:
